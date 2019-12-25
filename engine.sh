@@ -12,14 +12,32 @@
 cmd="-f docker-compose.yml"
 yml="" # additional yml files
 operation_up=false
+operation_down=false
 
-# find out if it is operation up
+# find out if it is operation up or down
 for arg in $@; do
     if [ "${arg}" == "up" ]; then
         operation_up=true
         echo "" > .engine.status
+    elif [ "${arg}" == "down" ] || [ "${arg}" == "stop" ]; then
+        operation_down=true
     fi
 done
+
+#unless it's operation down, make sure vm.max_map_count is sufficient and otherwise refuse to continue
+if [ "$operation_down" == false ]; then
+    let MAXMAP=$(sysctl vm.max_map_count -n)
+    if [ $MAXMAP -lt 262144 ]; then
+        red=`tput setaf 1`
+        yellow=`tput setaf 3`
+        reset=`tput sgr0`
+
+       echo "${red}ERROR: max map count is less than 262144. The DIG server backend will not work properly."
+       echo "Exiting engine script." 
+       echo "Run ${yellow}sudo sysctl -w vm.max_map_count=262144${red} to fix it${reset}"
+       exit -1
+    fi
+fi
 
 if [ "$operation_up" == true ]; then
     # add parameter from env file
