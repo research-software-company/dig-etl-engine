@@ -17,8 +17,10 @@ for ($i=0; $i -lt $numOfArgs; $i++)
 {
     if($args[$i] -eq "up")
     {
-   $operation_up = $true
-   #echo "" > .engine.status
+        $operation_up = $true
+        
+        #.engine.status records the contents of $yml. empty it for a new up command
+        Set-Content -Path '.engine.status' -Value ''
    }
 }
 
@@ -46,7 +48,8 @@ if ($operation_up)
 else
 {
  # add parameter from .engine.status
-    #cmd="$cmd $(head -n 1 .engine.status)"
+     $lines = cat ".engine.status"
+     $cmd = "$($cmd) $($lines)"
 }
 
 for ($i=0; $i -lt $numOfArgs; $i++)
@@ -64,12 +67,14 @@ for ($i=0; $i -lt $numOfArgs; $i++)
      }
 }
 
-#if [ "$operation_up" == true ]; then
-#    echo "$yml" > .engine.status
-#fi
+if ($operation_up)
+{
+      #save contents of yml to .engine.status for future down commands
+      Set-Content -Path '.engine.status' -Value $yml
+}
 
 $cmd = "docker-compose $($cmd)"
-Write-Host $cmd
-#Invoke-Expression -Command $cmd
+#Write-Host "run" $cmd
+Invoke-Expression -Command $cmd
 
 #Invoke-WebRequest -UseBasicParsing -Uri http://localhost:12497/mydig/projects
