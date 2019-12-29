@@ -24,11 +24,24 @@ for ($i=0; $i -lt $numOfArgs; $i++)
 
 if ($operation_up)
 {
-#something DIG ADD ONS
-#    source ./.env
-#    for arg in $(echo $DIG_ADD_ONS | tr "," "\n"); do
-#        cmd="$cmd -f docker-compose.${arg}.yml"
-#        yml="$yml -f docker-compose.${arg}.yml"
+        $lines = cat ".env"
+
+        foreach ($line in $lines) {
+            $bits = $line.Split("=");
+            $name = $bits[0];
+            $val = $bits[1];
+            Set-Variable $name $val
+        }
+
+        if ($DIG_ADD_ONS)
+        {
+        foreach ($curArg in $DIG_ADD_ONS.split(","))
+        {
+             $cmd= "$($cmd) -f docker-compose.$($curArg).yml"
+             $yml="$($yml) -f docker-compose.$($curArg).yml"
+        }
+        }
+
 }
 else
 {
@@ -56,6 +69,7 @@ for ($i=0; $i -lt $numOfArgs; $i++)
 #fi
 
 $cmd = "docker-compose $($cmd)"
-Invoke-Expression -Command $cmd
+Write-Host $cmd
+#Invoke-Expression -Command $cmd
 
 #Invoke-WebRequest -UseBasicParsing -Uri http://localhost:12497/mydig/projects
