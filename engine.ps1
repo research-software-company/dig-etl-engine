@@ -21,6 +21,7 @@ for ($i=0; $i -lt $numOfArgs; $i++)
         
         #.engine.status records the contents of $yml. empty it for a new up command
         Set-Content -Path '.engine.status' -Value ''
+        #echo "" > .engine.status
    }
 }
 
@@ -69,12 +70,45 @@ for ($i=0; $i -lt $numOfArgs; $i++)
 
 if ($operation_up)
 {
-      #save contents of yml to .engine.status for future down commands
-      Set-Content -Path '.engine.status' -Value $yml
+#save contents of yml to .engine.status for future down commands
+Set-Content -Path '.engine.status' -Value $yml
+
+#run up in detach mode so we can check server status
+$cmd= "$($cmd) --detach"
 }
 
 $cmd = "docker-compose $($cmd)"
 #Write-Host "run" $cmd
 Invoke-Expression -Command $cmd
 
-#Invoke-WebRequest -UseBasicParsing -Uri http://localhost:12497/mydig/projects
+
+
+#check whether server is running correctly
+if ($operation_up)
+{
+Write-Host "Checking that DIG server is running properly..."
+Start-Sleep 10
+try{
+# web test code from stackoverflow: https://stackoverflow.com/a/20262872/5961793
+$HTTP_Request = [System.Net.WebRequest]::Create('http://localhost:12497/mydig/projects')
+$HTTP_Request.Credentials = new-object System.Net.NetworkCredential($DIG_AUTH_USER, $DIG_AUTH_PASSWORD);
+$HTTP_Response = $HTTP_Request.GetResponse()
+$HTTP_Status = [int]$HTTP_Response.StatusCode
+
+If ($HTTP_Status -eq 200) {
+    Write-Host "DIG is up and running!"
+}
+Else {
+    Write-Host "DIG is not running as expected. Please check that Docker has access to at least 8 gb of memory."
+    Write-Host "You can call .\engine.p1 down to stop the containers" 
+}
+}
+catch{
+Write-Host "DIG is not running as expected. Please check that Docker is running and has access to at least 8gb memory."
+    Write-Host "You can call .\engine.p1 down to stop the containers" 
+}
+finally{
+If ($HTTP_Response -eq $null) { } 
+Else { $HTTP_Response.Close() }
+}
+}
