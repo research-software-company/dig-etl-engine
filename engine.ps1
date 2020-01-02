@@ -7,6 +7,11 @@
 # ./engine.ps1 down
 # ./engine.ps1 restart mydig_ws
 
+# Change directory to the script's directory
+$scriptpath = $MyInvocation.MyCommand.Path
+$scriptdir = Split-Path $scriptpath
+cd $scriptdir
+
 $cmd="-f docker-compose.yml"
 $yml="" # additional yml files
 $operation_up=$false
@@ -27,7 +32,7 @@ for ($i=0; $i -lt $numOfArgs; $i++)
 
 if ($operation_up)
 {
-        $lines = cat ".env"
+        $lines = Get-Content ".env"
 
         foreach ($line in $lines) {
             $bits = $line.Split("=");

@@ -1,0 +1,10 @@
+package:
+    name: dig-etl
+    version: "0.1"
+  
+source:
+    git_url: https://github.com/research-software-company/dig-etl-engine.git
+    git_rev: simplify_install
+  
+about:
+    home: https://github.com/usc-isi-i2/dig-etl-engine
