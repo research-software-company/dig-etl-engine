@@ -112,7 +112,7 @@ if ($operation_up) {
         }
         $FailureCount = $FailureCount + 1
         Start-Sleep -Seconds 3
-    } while ($FailueCount -le 10)
+    } while ($FailueCount -le 20)
 
     Write-Host
     if ($Success) {
