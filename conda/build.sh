@@ -11,3 +11,5 @@ cp $SRC_DIR/conda/run-engine.sh $PREFIX/bin/engine.sh
 chmod ug+x $PREFIX/bin/engine.sh
 
 mkdir -p $PREFIX/mydig-projects/.es/data
+chown -R 1000:1000 $PREFIX/mydig-projects/.es
+
