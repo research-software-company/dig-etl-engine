@@ -1,8 +1,8 @@
 #!/bin/bash
 
-cp -R $SRC_DIR $BUILD_PREFIX
+cp -R $SRC_DIR $PREFIX
 
-cp $SRC_DIR/conda/.env.conda $BUILD_PREFIX/.env
-chmod 666 $BUILD_PREFIX/logstash/sandbox/settings/logstash.yml
+cp $SRC_DIR/conda/.env.conda $PREFIX/.env
+chmod 666 $PREFIX/logstash/sandbox/settings/logstash.yml
 
-mkdir -p $BUILD_PREFIX/mydig-projects/.es/data
+mkdir -p $PREFIX/mydig-projects/.es/data
