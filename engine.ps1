@@ -88,6 +88,7 @@ if ($operation_up) {
     $Success = $false
 
     Do {
+	    Start-Sleep -Seconds 5
         try {
             # web test code from stackoverflow: https://stackoverflow.com/a/20262872/5961793
             $HTTP_Request = [System.Net.WebRequest]::Create('http://localhost:12497/mydig/projects')
@@ -114,7 +115,6 @@ if ($operation_up) {
             Write-Host -ForegroundColor Yellow "." -NoNewline
         }
         $FailureCount = $FailureCount + 1
-        Start-Sleep -Seconds 3
     } while ($FailueCount -le 20)
 
     Write-Host
