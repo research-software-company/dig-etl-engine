@@ -48,8 +48,11 @@ if ($operation_up) {
 }
 else {
     # add parameter from .engine.status
+	if (Test-Path ".engine.status")
+	{
     $lines = cat ".engine.status"
     $cmd = "$($cmd) $($lines)"
+	}
 }
 
 for ($i = 0; $i -lt $numOfArgs; $i++) {
