@@ -84,11 +84,12 @@ Invoke-Expression -Command $cmd
 #check whether server is running correctly
 if ($operation_up) {
     Write-Host "Checking that DIG server is running properly..."
+    Start-Sleep -Seconds 5 #an initial sleep to give it time to start (in addition to the one below)
     $FailureCount = 0
     $Success = $false
 
     Do {
-	    Start-Sleep -Seconds 5
+	    Start-Sleep -Seconds 4
         try {
             # web test code from stackoverflow: https://stackoverflow.com/a/20262872/5961793
             $HTTP_Request = [System.Net.WebRequest]::Create('http://localhost:12497/mydig/projects')
@@ -115,7 +116,7 @@ if ($operation_up) {
             Write-Host -ForegroundColor Yellow "." -NoNewline
         }
         $FailureCount = $FailureCount + 1
-    } while ($FailueCount -le 20)
+    } while ($FailueCount -le 15)
 
     Write-Host
     if ($Success) {
