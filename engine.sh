@@ -34,7 +34,7 @@ if [ "$operation_down" == false ]; then
 
        echo "${red}ERROR: max map count is less than 262144. The DIG server backend will not work properly."
        echo "Exiting engine script." 
-       echo "Run ${yellow}sudo sysctl -w vm.max_map_count=262144${red} to fix it${reset}"
+       echo "Run ${yellow}sudo bash modify-map-count.sh${red} to fix it${reset}"
        exit -1
     fi
 fi
