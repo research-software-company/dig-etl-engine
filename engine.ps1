@@ -92,7 +92,7 @@ if ($operation_up) {
 	    Start-Sleep -Seconds 4
         try {
             # web test code from stackoverflow: https://stackoverflow.com/a/20262872/5961793
-            $HTTP_Request = [System.Net.WebRequest]::Create('http://localhost:12497/mydig/projects')
+            $HTTP_Request = [System.Net.WebRequest]::Create('http://'+$DOMAIN+':'+$PORT +'/mydig/projects')
             $HTTP_Request.Credentials = new-object System.Net.NetworkCredential($DIG_AUTH_USER, $DIG_AUTH_PASSWORD);
             $HTTP_Response = $HTTP_Request.GetResponse()
             $HTTP_Status = [int]$HTTP_Response.StatusCode
@@ -120,7 +120,8 @@ if ($operation_up) {
 
     Write-Host
     if ($Success) {
-        Write-Host -ForegroundColor Green "DIG Server is up and running"
+	$SuccessMessage= "DIG Server is up and running. Visit it at "+$DOMAIN+":"+$PORT +"/mydig/ui/ (you will be asked for the username and password you set in .env"
+        Write-Host -ForegroundColor Green $SuccessMessage
     } else {
         Write-Host -ForegroundColor Red "DIG Server is not up"
         Write-Host -ForegroundColor Red "Please make sure Docker has at least 8GB of memory available"
