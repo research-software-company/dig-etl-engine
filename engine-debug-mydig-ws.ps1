@@ -98,7 +98,7 @@ if ($operation_up) {
             $HTTP_Response = $HTTP_Request.GetResponse()
             $HTTP_Status = [int]$HTTP_Response.StatusCode
 
-            If ($HTTP_Status -eq 200) {
+            If ($HTTP_Status -eq 401) { # 401 means the backend is up (if not, a 50x will be returned)
                 $Success = $true
                 Break
             }
