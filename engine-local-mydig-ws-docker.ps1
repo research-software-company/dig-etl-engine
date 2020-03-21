@@ -12,7 +12,7 @@ $scriptpath = $MyInvocation.MyCommand.Path
 $scriptdir = Split-Path $scriptpath
 Push-Location $scriptdir
 
-$cmd = "-f docker-compose-local-mydig-ws-docker.yml"
+$cmd = "-f docker-compose.local-mydig-ws-docker.yml"
 $yml = "" # additional yml files
 $operation_up = $false
 
