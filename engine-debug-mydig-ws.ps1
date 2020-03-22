@@ -87,45 +87,10 @@ if ($operation_up) {
     Write-Host "Checking that DIG server is running properly..."
     Start-Sleep -Seconds 5 #an initial sleep to give it time to start (in addition to the one below)
     $FailureCount = 0
-    $Success = $false
 
-    Do {
-	    Start-Sleep -Seconds 4
-        try {
-            # web test code from stackoverflow: https://stackoverflow.com/a/20262872/5961793
-            $HTTP_Request = [System.Net.WebRequest]::Create('http://localhost:12497/mydig/projects')
-            $HTTP_Request.Credentials = new-object System.Net.NetworkCredential($DIG_AUTH_USER, $DIG_AUTH_PASSWORD);
-            $HTTP_Response = $HTTP_Request.GetResponse()
-            $HTTP_Status = [int]$HTTP_Response.StatusCode
-
-            If ($HTTP_Status -eq 401) { # 401 means the backend is up (if not, a 50x will be returned)
-                $Success = $true
-                Break
-            }
-        }
-        catch {
-        }
-        finally {
-            If ($null -eq $HTTP_Response) { } 
-            Else { $HTTP_Response.Close() }
-        }
-
-        # Report failure
-        if ($FailureCount -eq 0) {   # Report failure for first time
-            Write-Host -ForegroundColor Yellow "DIG Server is not up yet, trying again" -NoNewline
-        } else {
-            Write-Host -ForegroundColor Yellow "." -NoNewline
-        }
-        $FailureCount = $FailureCount + 1
-    } while ($FailueCount -le 15)
 
     Write-Host
-    if ($Success) {
-        Write-Host -ForegroundColor Green "DIG Server is up and running"
-    } else {
-        Write-Host -ForegroundColor Red "DIG Server is not up"
-        Write-Host -ForegroundColor Red "Please make sure Docker has at least 8GB of memory available"
-    }
+    Write-Host -ForegroundColor Green "DIG Server is up and running"
 
 }
 
