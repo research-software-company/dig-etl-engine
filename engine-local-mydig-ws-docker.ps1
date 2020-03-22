@@ -50,7 +50,7 @@ else {
     # add parameter from .engine.status
 	if (Test-Path ".engine.status")
 	{
-    $lines = cat ".engine.status"
+    $lines = Get-Content ".engine.status"
     $cmd = "$($cmd) $($lines)"
 	}
 }
@@ -80,6 +80,14 @@ $cmd = "docker-compose $($cmd)"
 Invoke-Expression -Command $cmd
 
 
+function GetResponseCode ($url) {
+    try {
+        Invoke-WebRequest $url | Out-Null
+        return 200
+    } catch {
+        return $_.Exception.Response.StatusCode.Value__
+    }
+}
 
 #check whether server is running correctly
 if ($operation_up) {
@@ -90,23 +98,12 @@ if ($operation_up) {
 
     Do {
 	    Start-Sleep -Seconds 4
-        try {
-            # web test code from stackoverflow: https://stackoverflow.com/a/20262872/5961793
-            $HTTP_Request = [System.Net.WebRequest]::Create('http://localhost:12497/mydig/projects')
-            $HTTP_Request.Credentials = new-object System.Net.NetworkCredential($DIG_AUTH_USER, $DIG_AUTH_PASSWORD);
-            $HTTP_Response = $HTTP_Request.GetResponse()
-            $HTTP_Status = [int]$HTTP_Response.StatusCode
+        $backend_status = GetResponseCode('http://localhost:12497/mydig/projects')
+        $frontend_status = GetResponseCode('http://localhost:12497/mydig/ui/')
 
-            If ($HTTP_Status -eq 401) { # 401 means the backend is up (if not, a 50x will be returned)
-                $Success = $true
-                Break
-            }
-        }
-        catch {
-        }
-        finally {
-            If ($null -eq $HTTP_Response) { } 
-            Else { $HTTP_Response.Close() }
+        if ($backend_status -eq 401 -and $frontend_status -eq 200) {
+            $Success = $true
+            break
         }
 
         # Report failure

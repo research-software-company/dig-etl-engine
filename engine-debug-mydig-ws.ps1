@@ -50,7 +50,7 @@ else {
     # add parameter from .engine.status
 	if (Test-Path ".engine.status")
 	{
-    $lines = cat ".engine.status"
+    $lines = Get-Content ".engine.status"
     $cmd = "$($cmd) $($lines)"
 	}
 }
@@ -86,8 +86,6 @@ Invoke-Expression -Command $cmd
 if ($operation_up) {
     Write-Host "Checking that DIG server is running properly..."
     Start-Sleep -Seconds 5 #an initial sleep to give it time to start (in addition to the one below)
-    $FailureCount = 0
-
 
     Write-Host
     Write-Host -ForegroundColor Green "DIG Server is up and running"
