@@ -99,7 +99,7 @@ if ($operation_up) {
     Do {
 	    Start-Sleep -Seconds 4
         $backend_status = GetResponseCode('http://localhost:12497/mydig/projects')
-        $frontend_status = GetResponseCode('http://localhost:12497/mydig/ui/')
+        $frontend_status = GetResponseCode('http://localhost:12497/mydig/ui/home')
 
         if ($backend_status -eq 401 -and $frontend_status -eq 200) {
             $Success = $true
@@ -113,7 +113,7 @@ if ($operation_up) {
             Write-Host -ForegroundColor Yellow "." -NoNewline
         }
         $FailureCount = $FailureCount + 1
-    } while ($FailueCount -le 15)
+    } while ($FailureCount -le 15)
 
     Write-Host
     if ($Success) {
