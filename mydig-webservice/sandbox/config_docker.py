@@ -49,7 +49,8 @@ config = {
     },
     'sandpaper': {
         'url': 'http://sandpaper:9876',
-        'ws_url': 'http://mydig_ws:9879'
+        'ws_url': 'http://mydig_ws:9879/internal',
+        'es_url': 'http://elasticsearch:9200'
     },
     'users': {
         'admin': '123' # basic YWRtaW46MTIz
