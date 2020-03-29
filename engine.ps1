@@ -82,7 +82,7 @@ Invoke-Expression -Command $cmd
 
 
 #check whether server is running correctly
-ifunction GetResponseCode ($url) {
+function GetResponseCode ($url) {
     try {
         Invoke-WebRequest $url | Out-Null
         return 200
@@ -103,7 +103,7 @@ if ($operation_up) {
         $backend_status = GetResponseCode('http://localhost:12497/mydig/projects')
         $frontend_status = GetResponseCode('http://localhost:12497/mydig/ui/')
 
-        if ($backend_status -eq 401 -and $frontend_status -eq 200) {
+        if ($backend_status -eq 200 -and $frontend_status -eq 200) {
             $Success = $true
             break
         }
