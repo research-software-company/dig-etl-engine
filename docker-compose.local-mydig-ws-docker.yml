@@ -185,13 +185,10 @@ services:
       NODE_ENV: 'production'
       ES_HOST: '{"host": "http://${DOMAIN}:${PORT}/es", "apiVersion":"5.0"}'
       ES_HOST_STRING: 'http://elasticsearch:9200/'
-      # Point to the mydig conatiner in all endpoints
-      # http://mydig_ws:9879/internal/...
-      # ALso make the same changes in docker-compose.yml
-      CONFIG_ENDPOINT: 'http://${DOMAIN}:${PORT}/mydig_projects/'   # http://mydig_ws:9879/internal/projects
-      TAGS_ENTITY_ENDPOINT: 'http://${DOMAIN}:${PORT}/mydig_projects/PROJECT/tags/TAG/annotations/Ad/annotations'
-      TAGS_EXTRACTION_ENDPOINT: 'http://${DOMAIN}:${PORT}/mydig_projects/PROJECT/entities/ENTITY_ID/fields/EXTRACTION_FIELD/annotations'
-      TAGS_LIST_ENDPOINT: 'http://${DOMAIN}:${PORT}/mydig_projects/PROJECT/tags'
+      CONFIG_ENDPOINT: 'http://mydig_ws:9879/internal/projects/'
+      TAGS_ENTITY_ENDPOINT: 'http://mydig_ws:9879/internal/projects/PROJECT/tags/TAG/annotations/Ad/annotations'
+      TAGS_EXTRACTION_ENDPOINT: 'http://mydig_ws:9879/internal/projects/PROJECT/entities/ENTITY_ID/fields/EXTRACTION_FIELD/annotations'
+      TAGS_LIST_ENDPOINT: 'http://mydig_ws:9879/internal/projects/PROJECT/tags'
       SEARCH_CONFIG: '{
         "http://sandpaper:9876": "http://${DOMAIN}:${PORT}/search/coarse"
       }'
